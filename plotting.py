@@ -10,7 +10,7 @@ import numpy as np
 import sys
 import pylab
 
-pylab.matplotlib.use('Qt4Agg') #set the right backend
+#pylab.matplotlib.use('Qt4Agg') #set the right backend
 
 class ims:
     """
@@ -51,11 +51,12 @@ class ims:
             if isinstance(im.flatten()[0],(complex,np.complexfloating)):
                 self.complex = True
                 self.im = pylab.dstack([abs(im),pylab.angle(im)])                
-            else:
+            else:                
                 self.complex = False
                 self.im = im
         if im.ndim is 3:
-            self.complex = False            
+            im = abs(im)
+            self.complex = False
             if im.shape[0]<im.shape[2]:
                 self.im = np.dstack(im)
             else:
@@ -213,7 +214,8 @@ class ims:
             except IndexError:
                 return ""
         self.ax.format_coord = format_coord
-        self.fig.canvas.manager.window.raise_() #this pops the window to the top    
+        if 'qt' in pylab.matplotlib.get_backend().lower():
+            self.fig.canvas.manager.window.raise_() #this pops the window to the top    
         if self.showProfiles:
             posProf = self.posProfHoriz
             self.axX.cla()
