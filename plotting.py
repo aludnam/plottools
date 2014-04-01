@@ -320,6 +320,7 @@ class ims:
         self.fig.canvas.draw()
 
 def im(my_img,ax=None,**kwargs):
+    "Displays image showing the values under the cursor."
     if ax is None:
         ax = plt.gca()
     def format_coord(x, y):
@@ -336,6 +337,7 @@ def im(my_img,ax=None,**kwargs):
     plt.show()    
     
 def imTiles(d,sizeX=None,titNum=True):
+    "Displays the stack of images in the composed tiled figure."
     if sizeX==None:
         sizeX=np.ceil(np.sqrt(d.shape[0]))
     sizeY=np.ceil(d.shape[0]/sizeX)
@@ -349,6 +351,7 @@ def imTiles(d,sizeX=None,titNum=True):
             plt.title(str(i-1))
                 
 def complex2rgbalog(s,amin=0.5,dlogs=2):
+   "Displays complex image with intensity corresponding to the log(MODULUS) and color (hsv) correponging to PHASE."
    ph=np.anlge(s)
    t=np.pi/3
    nx,ny=s.shape
@@ -362,6 +365,7 @@ def complex2rgbalog(s,amin=0.5,dlogs=2):
    return rgba
 
 def complex2rgbalin(s):
+   "Displays complex image with intensity corresponding to the MODULUS and color (hsv) correponging to PHASE."    
    ph=np.angle(s)
    t=np.pi/3
    nx,ny=s.shape
@@ -376,7 +380,7 @@ def complex2rgbalin(s):
 
 def colorwheel(col='black'):
   """
-  colourwheel(col='black'):
+  Color wheel for phases in hsv colormap.
   """
   xwheel=np.linspace(-1,1,100)
   ywheel=np.linspace(-1,1,100)[:,np.newaxis]
@@ -392,19 +396,22 @@ def colorwheel(col='black'):
 
 def insertColorwheel(left=.7, bottom=.15, width=.1, height=.1,col='black'):
     """
-    insertColorwheel(left=.8, bottom=.2, width=.1, height=.1,col='black'):
-    Inser color wheel to  current axis.
+    Inserts color wheel to the current axis.
     """
     plt.axes((left,bottom,width,height), axisbg='w')
     colorwheel(col=col)
    # plt.savefig('output.png',bbox_inches='tight', pad_inches=0)      
 
 def insertColorbar(fig,im,left=.7, bottom=.1, width=.05, height=.8 )     :
+    """
+    Inserts color bar to the current axis.
+    """
     cax = fig.add_axes((left,bottom,width,height), axisbg='w')
     plt.colorbar(im, cax=cax)
     
 
 def showCplx(im,mask=0,pixSize_um=1,showGrid=True,modulusLog = False,maskPhase = False, maskPhaseThr = 0.01, cmapModulus = 'jet', cmapPhase = 'hsv', scalePhaseImg = True):
+    "Displays MODULUS and PHASE of the complex image in two subfigures."
     if modulusLog:
         modulus = np.log10(abs(im)) 
     else:
@@ -445,13 +452,13 @@ def showCplx(im,mask=0,pixSize_um=1,showGrid=True,modulusLog = False,maskPhase =
         insertColorwheel(left=.85)
     plt.tight_layout()
 
-def showLog(im):
+def showLog(im, cmap='jet'):
+    "Displays log of the real image with correct colorbar."
     f = plt.figure(); 
-    i = plt.imshow(im, norm=LogNorm())
+    i = plt.imshow(im, norm=LogNorm(), cmap=cmap)
     f.colorbar(i)
     return f,i
-    
-    
+        
 def ca():
     """
     Close all windows.
