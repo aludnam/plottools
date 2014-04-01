@@ -7,7 +7,6 @@ Created on Fri Apr  5 16:37:26 2013
 from matplotlib import pyplot as plt
 from matplotlib.colors import LogNorm
 import numpy as np
-import sys
 import pylab
 
 #pylab.matplotlib.use('Qt4Agg') #set the right backend
@@ -34,8 +33,7 @@ class ims:
     "V" shows var projection    
     "T" prints statistics
     
-    Works with qt bakcend: start ipython as:    ipyton --matplotlib qt
-                                                or do eg: matplotlib.use('Qtg4Agg')
+    Works with qt backend -> start ipython as: "ipyton --matplotlib qt" or do e.g.: "matplotlib.use('Qtg4Agg')"
 
     The core of the class taken from http://stackoverflow.com/questions/6620979/2d-slice-series-of-3d-array-in-numpy
     """
@@ -351,7 +349,10 @@ def imTiles(d,sizeX=None,titNum=True):
             plt.title(str(i-1))
                 
 def complex2rgbalog(s,amin=0.5,dlogs=2):
-   "Displays complex image with intensity corresponding to the log(MODULUS) and color (hsv) correponging to PHASE."
+   """
+   Displays complex image with intensity corresponding to the log(MODULUS) and color (hsv) correponging to PHASE.
+   From: pyVincent/ptycho.py
+   """
    ph=np.anlge(s)
    t=np.pi/3
    nx,ny=s.shape
@@ -365,7 +366,10 @@ def complex2rgbalog(s,amin=0.5,dlogs=2):
    return rgba
 
 def complex2rgbalin(s):
-   "Displays complex image with intensity corresponding to the MODULUS and color (hsv) correponging to PHASE."    
+   """
+   Displays complex image with intensity corresponding to the MODULUS and color (hsv) correponging to PHASE.
+   From: pyVincent/ptycho.py
+   """    
    ph=np.angle(s)
    t=np.pi/3
    nx,ny=s.shape
@@ -381,6 +385,7 @@ def complex2rgbalin(s):
 def colorwheel(col='black'):
   """
   Color wheel for phases in hsv colormap.
+  From: pyVincent/ptycho.py
   """
   xwheel=np.linspace(-1,1,100)
   ywheel=np.linspace(-1,1,100)[:,np.newaxis]
