@@ -426,7 +426,7 @@ def showCplx(im,mask=0,pixSize_um=1,showGrid=True,modulusLog = False,maskPhase =
     plt.subplot(121)
     #plt.subplots_adjust(left=0.02, bottom=0.06, right=0.95, top=0.94, wspace=0.05)
     #plt.imshow(abs(np.ma.masked_array(im,mask)))
-    plt.imshow(modulus,extent=(0,im.shape[1]*pixSize_um,0,im.shape[0]*pixSize_um),cmap=cmapModulus)    
+    plt.imshow(modulus,extent=(0,im.shape[1]*pixSize_um,0,im.shape[0]*pixSize_um),cmap=cmapModulus,interpolation='Nearest')    
 #    plt.colorbar(m)
     if showGrid: 
         plt.grid(color='w')
@@ -446,7 +446,7 @@ def showCplx(im,mask=0,pixSize_um=1,showGrid=True,modulusLog = False,maskPhase =
         vminPhase = phase.min()
         vmaxPhase = phase.max()
         
-    plt.imshow(np.ma.masked_array(phase,mask),cmap=cmapPhase,vmin=vminPhase,vmax=vmaxPhase,extent=(0,im.shape[1]*pixSize_um,0,im.shape[0]*pixSize_um))
+    plt.imshow(np.ma.masked_array(phase,mask),cmap=cmapPhase,interpolation='Nearest',vmin=vminPhase,vmax=vmaxPhase,extent=(0,im.shape[1]*pixSize_um,0,im.shape[0]*pixSize_um))
     if showGrid:
         plt.grid(color='k')
     if pixSize_um !=1:
