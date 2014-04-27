@@ -2,11 +2,13 @@
 """
 Created on Fri Apr  5 16:37:26 2013
 
+# to do: statistic for var, max and sum frames
 @author: ondrej
 """
 from matplotlib import pyplot as plt
 from matplotlib.colors import LogNorm
 import numpy as np
+import scipy.ndimage as nd
 import pylab
 
 #pylab.matplotlib.use('Qt4Agg') #set the right backend
@@ -41,7 +43,7 @@ class ims:
     pylab.rcParams['keymap.pan'] = '' # to disable the binding of the key 'p'    
     pylab.rcParams['keymap.grid'] = '' # to disable the binding of the key 'g'        
     pylab.rcParams['keymap.zoom'] = '' # to disable the binding of the key 'o'            
-    def __init__(self, im, i=0):
+    def __init__(self, im, i=0, titles=None):
         pylab.ion()
         self.dtype = im.dtype
         if im.ndim is 2:
@@ -55,11 +57,13 @@ class ims:
         if im.ndim is 3:
             im = abs(im)
             self.complex = False
-            if im.shape[0]<im.shape[2]:
-                self.im = np.dstack(im)
-            else:
-                self.im = im
-        self.i = i        
+            self.im = np.dstack(im) # first dimension is the index of the stack
+#            if im.shape[0]<im.shape[2]:
+#                self.im = np.dstack(im)
+#            else:
+#                self.im = im
+        self.i = i 
+        self.titles = titles
         self.logon = 0
         self.cmap = 0
         self.projToggle = 0
@@ -185,8 +189,11 @@ class ims:
         elif self.cmap==2:
             pylab.hot()
         elif self.cmap==3:
-            pylab.hsv()            
-        self.ax.set_title(tit)
+            pylab.hsv()
+        if self.titles==None:
+            self.ax.set_title(tit)
+        else:
+            self.ax.set_title(self.titles[self.i])
         pylab.show()        
         hx,hy = self.frameShape[0]/2., self.frameShape[1]/2.
         lx,ly = hx/(self.zoom),hy/(self.zoom)
@@ -240,6 +247,7 @@ class ims:
         print "Shape: ", img.shape              
         print "Maximum: ", img.max(), "@", np.unravel_index(np.argmax(img),img.shape)
         print "Minimum: ", img.min(), "@", np.unravel_index(np.argmin(img),img.shape)
+        print "Center of mass:", nd.measurements.center_of_mass(img)
         print "Mean: ", img.mean()
         print "Standard deviation: ", img.std()
         print "Variance: ", img.var()        
